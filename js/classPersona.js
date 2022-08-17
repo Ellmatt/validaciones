@@ -58,7 +58,7 @@ export class Persona {
             "Generación Alfa",
             "2011 - Actualidad",
             "Nativos Digitales al 100%",
-            "Son predilectos 😜"
+            'Son predilectos 😜'
           );
         } else {
           return '<p>No se posee datos para la fecha seleccionada</p>';
