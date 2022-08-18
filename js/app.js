@@ -1,6 +1,14 @@
-import{ Persona} from './classPersona.js'
-// en el archivo donde se quiere ejecurar hay que agregar IMPORT en la primer linea de codigo con el demas codigo de arriva 
-import {cantidadCaracteres} from './validaciones.js'
+import { Persona } from "./classPersona.js";
+// en el archivo donde se quiere ejecurar hay que agregar IMPORT en la primer linea de codigo con el demas codigo de arriva
+import {
+  cantidadCaracteres,
+  validarAltura,
+  validarAnio,
+  validarDni,
+  validarEdad,
+  validarPeso,
+} from "./validaciones.js";
+
 let nombre = document.getElementById("nombre");
 let edad = document.getElementById("edad");
 let dni = document.getElementById("dni");
@@ -9,25 +17,50 @@ let peso = document.getElementById("peso");
 let altura = document.getElementById("altura");
 let anio = document.getElementById("fechaNacimiento");
 let formulario = document.getElementById("formGeneraciones");
-let alert = document.querySelector("#msjError");
+let alerta = document.querySelector("#msjError");
 let btnmostrarDatos = document.querySelector("#mostrarDatos");
 let btnmostrarGeneracion = document.querySelector("#mostrarGeneracion");
+
 // sumar el formulario y luego hacer lo de abajo
 // aqui voy agregando los eventos
 formulario.addEventListener("submit", crearPersona);
-nombre.addEventListener('blur', ()=>{cantidadCaracteres(nombre)})
+nombre.addEventListener("blur", () => {
+  cantidadCaracteres(nombre);
+});
+edad.addEventListener("blur", () => {
+  validarEdad(edad);
+});
+dni.addEventListener("blur", () => {
+  validarDni(dni);
+});
+anio.addEventListener("blur", () => {
+  validarAnio(anio);
+});
+altura.addEventListener("blur", () => {
+  validarAltura(altura);
+});
+peso.addEventListener("blur", () => {
+  validarPeso(peso);
+});
 // agregar funcion flecha cuando hay que pasar parametro
 // asi se crea la persona
-
 
 function crearPersona(e) {
   // la E es para dar tiempo a cargar datos y no recargar la pagina siempre que se presione el boton
 
   e.preventDefault();
+  // lo siguiente es para validar y no enviar el form
+  // agregar en condicional demas funciones con &&
+  if (
+    cantidadCaracteres(nombre) &&
+    validarEdad(edad) &&
+    validarDni(dni) &&
+    validarAnio(anio) &&
+    validarAltura(altura) &&
+    validarPeso(peso)
+  ) {
+    // si todo esta correcto hacer lo siguiente
 
-    console.log("tengo que crear la persona");
-    //hay que ocultar el alert
-   
     const nuevaPersona = new Persona(
       nombre.value,
       edad.value,
@@ -37,8 +70,9 @@ function crearPersona(e) {
       altura.value,
       anio.value
     );
-    //reseteo los datos del formulario 
-    formGeneraciones.reset();
+    //reseteo los datos del formulario
+limpiarFormulario()
+    // formGeneraciones.reset();
     // mostramos opciones para la persona creada
     let datosExtras = document.querySelector("#datosExtras");
     datosExtras.className = "container bg-light my-4 rounded-3";
@@ -52,12 +86,18 @@ function crearPersona(e) {
       let panelDatos = document.querySelector("#detalle");
       panelDatos.innerHTML = nuevaPersona.mostrarGeneracion();
     });
-  
+  } else {
+    alert("corregir los datos");
+  }
 }
-
-
 
 function mostrarDatosPersona(persona) {
   let panelDatos = document.querySelector("#detalle");
   panelDatos.innerHTML = persona.mostrarDatos();
+}
+
+function limpiarFormulario() {
+  formGeneraciones.reset();
+  console.log(document.getElementsByTagName("input"));
+  // hacer un bucle tomar cada input y cambiar el classNames='form-control'
 }
